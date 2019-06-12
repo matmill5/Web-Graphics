@@ -1,0 +1,40 @@
+<html>
+    <body>
+        <h1>Canvas Examples</h1>
+        <hr>
+        <canvas id="canvas1" width="200" height="100" style="border:1px solid #000000;"></canvas>
+        <hr>
+        <canvas id="canvas2" width="200" height="100" style="border:1px solid #000000;"></canvas>
+        <script>
+            var c = document.getElementById("canvas2");
+            var ctx = c.getContext("2d");
+            ctx.moveTo(0, 0);
+            ctx.lineTo(200, 100);
+            ctx.stroke();
+        </script>
+        <hr>
+        <canvas id="canvas3" width="200" height="100" style="border:1px solid #000000;"></canvas>
+        <script>
+            var c = document.getElementById("canvas3");
+            var ctx = c.getContext("2d");
+            ctx.moveTo(0, 0);
+            ctx.lineTo(200, 100);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+            ctx.stroke();        
+        </script>
+        <hr>
+        <canvas id="canvas4" width="200" height="100" style="border:1px solid #000000;"></canvas>
+        <script>
+            var c = document.getElementById("canvas4");
+            var ctx = c.getContext("2d");
+            ctx.font = "30px Arial";
+            ctx.strokeText("Hello World", 10, 50);
+            ctx.fillText("Hello World", 20, 60);
+            ctx.fillStyle = 'blue';
+            ctx.fillText("Hello World", 30, 70);
+        </script>
+    </body>
+</html>
+
