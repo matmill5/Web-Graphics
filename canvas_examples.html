@@ -35,6 +35,45 @@
             ctx.fillStyle = 'blue';
             ctx.fillText("Hello World", 30, 70);
         </script>
+        <hr>
+        <canvas id="canvas5" width="200" height="100" style="border:1px solid #000000;"></canvas>
+        <script>
+            var c = document.getElementById("canvas5");
+            var ctx = c.getContext("2d");
+
+            // Create gradient
+            var grd = ctx.createLinearGradient(0, 0, 200, 0);
+            grd.addColorStop(0, "red");
+            grd.addColorStop(1, "blue");
+
+            // Fill with gradient
+            ctx.fillStyle = grd;
+            ctx.fillRect(10, 10, 150, 80);
+        </script>
+        <hr>
+        <canvas id="canvas6" width="200" height="100" style="border:1px solid #000000;"></canvas>
+        <script>
+            var c = document.getElementById("canvas6");
+            var ctx = c.getContext("2d");
+
+            // Create gradient
+            var grd = ctx.createRadialGradient(75, 50, 1, 90, 60, 60);
+            grd.addColorStop(0, "blue");
+            grd.addColorStop(1, "green");
+
+            // Fill with gradient
+            ctx.fillStyle = grd;
+            ctx.fillRect(10, 10, 150, 80);
+        </script>
+        <hr>
+        <img id="banner" src="banner.png" alt="A LinkedIn Banner" width="200" height="100">
+        <canvas id="canvas7" width="200" height="100" style="border:1px solid #000000;"></canvas>
+        <script>
+            var c = document.getElementById("canvas7");
+            var ctx = c.getContext("2d");
+            var img = document.getElementById("banner");
+            ctx.drawImage(img, 1, 1,200,100);
+        </script>
     </body>
 </html>
 
