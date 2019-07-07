@@ -1,4 +1,3 @@
-    
 # module get_data
 
 import csv
