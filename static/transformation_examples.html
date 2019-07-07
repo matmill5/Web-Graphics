@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Canvas Tutorial</title>
+  </head>
+  <body onload = "drawStackRectangles(); drawTranslation(); 
+  drawRotation(); drawScale(); drawTransformMatrix();">
+    <h1>Transformation Examples</h1>
+    <hr>
+    <a href = "/static/examples.html">(examples)</a>
+
+    <hr>
+    <canvas id="canvas0" width="250" height="150"></canvas>
+    <script type="application/javascript">
+    function drawStackRectangles() {
+        var ctx = document.getElementById('canvas0').getContext('2d');
+
+        ctx.fillRect(0, 0, 150, 150);   // Draw a rectangle with default settings
+        ctx.save();                  // Save the default state
+        
+        ctx.fillStyle = '#09F';      // Make changes to the settings
+        ctx.fillRect(15, 15, 120, 120); // Draw a rectangle with new settings
+
+        ctx.save();                  // Save the current state
+        ctx.fillStyle = '#FFF';      // Make changes to the settings
+        ctx.globalAlpha = 0.5; 
+        ctx.fillRect(30, 30, 90, 90);   // Draw a rectangle with new settings
+
+        ctx.restore();               // Restore previous state
+        ctx.fillRect(45, 45, 60, 60);   // Draw a rectangle with restored settings
+
+        ctx.restore();               // Restore original state
+        ctx.fillRect(60, 60, 30, 30);   // Draw a rectangle with restored settings
+    }
+    </script>
+
+    <hr>
+    <canvas id="canvas1" width="250" height="150"></canvas>
+    <script type="application/javascript">
+    function drawTranslation() {
+        var ctx = document.getElementById('canvas1').getContext('2d');
+        for (var i = 0; i < 3; i++) {
+            for (var j = 0; j < 3; j++) {
+            ctx.save();
+            ctx.fillStyle = 'rgb(' + (51 * i) + ', ' + (255 - 51 * i) + ', 255)';
+            ctx.translate(10 + j * 50, 10 + i * 50);
+            ctx.fillRect(0, 0, 25, 25);
+            ctx.restore();
+            }
+        }
+    }
+    </script>
+
+    <hr>
+    <canvas id="canvas2" width="250" height="150"></canvas>
+    <script type="application/javascript">
+    function drawRotation() {
+        var ctx = document.getElementById('canvas2').getContext('2d');
+        
+        // left rectangles, rotate from canvas origin
+        ctx.save();
+        // blue rect
+        ctx.fillStyle = '#0095DD';
+        ctx.fillRect(30, 30, 100, 100); 
+        ctx.rotate((Math.PI / 180) * 25);
+        // grey rect
+        ctx.fillStyle = '#4D4E53';
+        ctx.fillRect(30, 30, 100, 100);
+        ctx.restore();
+
+        // right rectangles, rotate from rectangle center
+        // draw blue rect
+        ctx.fillStyle = '#0095DD';
+        ctx.fillRect(150, 30, 100, 100);  
+        
+        ctx.translate(200, 80); // translate to rectangle center 
+                                // x = x + 0.5 * width
+                                // y = y + 0.5 * height
+        ctx.rotate((Math.PI / 180) * 25); // rotate
+        ctx.translate(-200, -80); // translate back
+        
+        // draw grey rect
+        ctx.fillStyle = '#4D4E53';
+        ctx.fillRect(150, 30, 100, 100);
+    }
+    </script>
+
+    <hr>
+    <canvas id="canvas3" width="250" height="150"></canvas>
+    <script type="application/javascript">
+    function drawScale() {
+        var ctx = document.getElementById('canvas3').getContext('2d');
+        
+        // draw a simple rectangle, but scale it.
+        ctx.save();
+        ctx.scale(10, 3);
+        ctx.fillRect(1, 10, 10, 10);
+        ctx.restore();
+
+        // mirror horizontally
+        ctx.scale(-1, 1);
+        ctx.font = '48px serif';
+        ctx.fillText('MDN', -135, 120);
+    }
+    </script>
+
+    <hr>
+    <canvas id="canvas4" width="250" height="250"></canvas>
+    <script type="application/javascript">
+    function drawTransformMatrix() {
+        var ctx = document.getElementById('canvas4').getContext('2d');
+
+        var sin = Math.sin(Math.PI / 6);
+        var cos = Math.cos(Math.PI / 6);
+        ctx.translate(100, 100);
+        var c = 0;
+        for (var i = 0; i <= 12; i++) {
+            c = Math.floor(255 / 12 * i);
+            ctx.fillStyle = 'rgb(' + c + ', ' + c + ', ' + c + ')';
+            ctx.fillRect(0, 0, 100, 10);
+            ctx.transform(cos, sin, -sin, cos, 0, 0);
+        }
+        
+        ctx.setTransform(-1, 0, 0, 1, 100, 100);
+        ctx.fillStyle = 'rgba(255, 128, 255, 0.5)';
+        ctx.fillRect(0, 50, 100, 100);
+        }
+    </script>
+
+    </body>
+</html>
