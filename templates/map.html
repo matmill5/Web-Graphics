@@ -22,6 +22,7 @@
                 state_shape = states.getChild(state);
                 state_shape.disableStyle();
                 fill(0,0,{{ growth[key] }} * 8 + 128)
+                text(pop[key])
                 shape(state_shape,0,0)
             {% endfor %}
         }
@@ -31,6 +32,11 @@
     <ul>
     {% for key in growth %}
         <li>{{ key }} = {{ growth[key] }}</li>
+    {% endfor %}
+    </ul>
+    <ul>
+    {% for key in pop %}
+        <li>{{ key }} = {{ pop[key] }}</li>
     {% endfor %}
     </ul>
     <hr>

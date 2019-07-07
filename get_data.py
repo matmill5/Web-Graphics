@@ -16,3 +16,14 @@ def get_growth_table():
             growth_pct = int(growth_ratio * 100 + 0.5)
             growth_table[code] = growth_pct
     return(growth_table)
+
+def get_pop_table():
+    pop_table = {}
+    with open('state_populations.csv','r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            row = dict(row)
+            code = row["Code"]
+            y2018 = float(row["2018"].replace(",",""))
+            pop_table[code] = y2018
+    return(pop_table)        
