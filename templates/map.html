@@ -7,7 +7,9 @@
         <hr>
         <a href="/static/examples.html">(examples)</a>
         <hr>
-        <script type="application/processing" data-processing-target="mycanvas">
+        <script type="application/processing" data-processing-target="my_canvas">
+
+        // data from https://www.census.gov/data/tables/time-series/demo/popest/2010s-state-total.html
         
         void setup() {
             size(1000, 600);
@@ -15,9 +17,10 @@
             stroke(255);
             // ellipse(50, 50, 25, 25);
             PShape s;
-            states = loadShape ("us.svg");
+            states = loadShape ("static/us.svg");
             smooth();
             shape(states,0,0);
+
             {% for key in growth %}
                 state = "{{ key }}";
                 state_shape = states.getChild(state);
@@ -27,7 +30,7 @@
             {% endfor %}
         }
         </script>
-    <canvas id="mycanvas"></canvas>
+    <canvas id="my_canvas"> </canvas>
     <hr>
     <ul>
     {% for key in growth %}
