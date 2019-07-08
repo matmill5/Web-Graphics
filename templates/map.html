@@ -9,6 +9,7 @@
         <hr>
         <script type="application/processing" data-processing-target="my_canvas">
         void setup() {
+            frameRate(1);
             size(1000, 600);
             background(100);
             stroke(255);
@@ -21,19 +22,84 @@
                 state = "{{ key }}";
                 state_shape = states.getChild(state);
                 state_shape.disableStyle();
-                fill(0,0,{{ growth[key] }} * 8 + 128)
-                text(pop[key])
+                fill(0,{{ growth[key] }} * 8 + 128,0)
+                {% if growth[key] < 0 %}
+                    fill({{ growth[key] }} * 8 + 128,0,0)
+                {% endif %}
                 shape(state_shape,0,0)
             {% endfor %}
+            fill(0)
+            text("Green = positive growth", 14, 100)
+            text("Red = negative growth", 15, 114)
+            text("Numbers are 2018-total-pop", 15, 128)
+            text(String({{ pop["WA"] }}), 235, 78)
+            text(String({{ pop["OR"] }}), 215, 140)
+            text(String({{ pop["ID"] }}), 298, 170)
+            text(String({{ pop["MT"] }}), 372, 114)
+            text(String({{ pop["ND"] }}), 498, 113)
+
+            text(String({{ pop["HI"] }}), 418, 527)
+            text(String({{ pop["WY"] }}), 393, 188)
+            text(String({{ pop["UT"] }}), 331, 267)
+            text(String({{ pop["CO"] }}), 428, 287)
+            text(String({{ pop["NV"] }}), 261, 240)
+
+            text(String({{ pop["CA"] }}), 184, 265)
+            text(String({{ pop["AZ"] }}), 306, 358)
+            text(String({{ pop["NM"] }}), 424, 368)
+            text(String({{ pop["AK"] }}), 191, 488)
+            text(String({{ pop["SD"] }}), 500, 169)
+
+            text(String({{ pop["NE"] }}), 505, 228)
+            text(String({{ pop["KS"] }}), 541, 292)
+            text(String({{ pop["OK"] }}), 555, 352)
+            text(String({{ pop["TX"] }}), 538, 422)
+            text(String({{ pop["LA"] }}), 640, 431)
+
+            text(String({{ pop["AR"] }}), 644, 357)
+            text(String({{ pop["MO"] }}), 620, 291)
+            text(String({{ pop["IA"] }}), 599, 210)
+            text(String({{ pop["MN"] }}), 586, 125)
+            text(String({{ pop["WI"] }}), 657, 152)
+
+            text(String({{ pop["MI"] }}), 734, 180)
+            text(String({{ pop["IN"] }}), 720, 253)
+            text(String({{ pop["OH"] }}), 774, 221)
+            text(String({{ pop["WV"] }}), 807, 256)
+            text(String({{ pop["VA"] }}), 844, 268)
+
+            text(String({{ pop["PA"] }}), 836, 204)
+            text(String({{ pop["NY"] }}), 850, 153)
+            text(String({{ pop["MD"] }}), 873, 229)
+            text(String({{ pop["NC"] }}), 849, 314)
+            text(String({{ pop["SC"] }}), 811, 339)
+
+            text(String({{ pop["GA"] }}), 768, 375)
+            text(String({{ pop["FL"] }}), 842, 470)
+            text(String({{ pop["KY"] }}), 726, 297)
+            text(String({{ pop["TN"] }}), 721, 330)
+            text(String({{ pop["MS"] }}), 684, 395)
+
+            text(String({{ pop["AL"] }}), 746, 408)
+            text(String({{ pop["ME"] }}), 929, 51)
+            text(String({{ pop["VT"] }}), 897, 97)
+            text(String({{ pop["NH"] }}), 920, 115)
+            text(String({{ pop["MA"] }}), 908, 145)
+
+            text(String({{ pop["CT"] }}), 915, 159)
+            text(String({{ pop["RI"] }}), 913, 178)
+            text(String({{ pop["NJ"] }}), 900, 195)
+            text(String({{ pop["IL"] }}), 675, 235)
+            text(String({{ pop["DE"] }}), 907, 243)
         }
         </script>
     <canvas id="my_canvas"> </canvas>
-    <hr>
     <ul>
     {% for key in growth %}
         <li>{{ key }} = {{ growth[key] }}</li>
     {% endfor %}
     </ul>
+    <hr>
     <ul>
     {% for key in pop %}
         <li>{{ key }} = {{ pop[key] }}</li>
