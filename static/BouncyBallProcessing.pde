@@ -23,5 +23,4 @@ void draw(){
     ball_y = (int) (ball_height); //Sets the new ball y-position
 
     ellipse(ball_x, ball_y, ball_radius, ball_radius); //Draws the ball
-
 }

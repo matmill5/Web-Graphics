@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.min.js"></script>
+    </head>
+    <body>
+        <h1>Pomax Examples</h1>
+        <hr>
+        <a href="/static/examples.html">(examples)</a>
+        <hr>
+        <script type="application/processing" data-processing-target="my_canvas_1">
+            float framerate = 14; // our "sketch" will have a framerate of 24 frames per second.
+   
+            int ball_x;           // ball administration: x coordinate
+            int ball_y;           // ball administration: y coordinate
+            int ball_radius = 20; // ball administration: ball radius
+          
+            void setup() {
+              size(200,200);        // set draw area size
+              frameRate(framerate); // set animation framerate
+              ball_x = width/2;     // set the initial ball coordinates
+              ball_y = ball_radius; // set the initial ball coordinates
+              stroke(#003300);      // set the default shape outline colour
+              fill(#0000FF);        // set the default shape fill colour
+            }
+          
+            void draw() {    // compute the ball height for this frame
+              float bounce_height = height/2 * abs(sin(PI*frameCount/framerate));
+          
+              // because the top of the screen is 0, and the bottom is "height",
+              float ball_height = height - (bounce_height+ball_radius);
+              // clear the drawing area
+              background(#FFFFEE);
+              // set the new ball y position
+              ball_y = (int) (ball_height);
+              // draw the ball
+              ellipse(ball_x,ball_y,ball_radius,ball_radius);
+            }
+          
+        </script>
+        <canvas id="my_canvas_1"> </canvas>
+        <canvas id="my_canvas_1a" data-processing-sources="BouncyBallProcessing.pde"> </canvas>
+        <canvas id="my_canvas_2a" data-processing-sources="BouncyBallProcessingOOP.pde"> </canvas>
+        <hr>
+        <canvas id="my_canvas_3a" data-processing-sources="BouncyBoxBallOffsetAndMouseHoldAndMouseMoveProcessing.pde"> </canvas>
+        <canvas id="my_canvas_4a" data-processing-sources="BouncyBoxBallOffsetAndMouseHoldProcessing.pde"></canvas>
+        <hr>
+        <canvas id="my_canvas_5a" data-processing-sources="BouncyBoxBallProcessing.pde"> </canvas>
+        <canvas id="my_canvas_6a" data-processing-sources="BouncyBoxProcessingOOP.pde"> </canvas>
+    </body>
+</html>
