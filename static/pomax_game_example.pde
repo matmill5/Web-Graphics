@@ -1,4 +1,4 @@
-Bouncer[] bouncer = new Bouncer[100];
+Bouncer[] bouncer = new Bouncer[1];
  
   void setup() {
     size(200,200);
@@ -6,29 +6,22 @@ Bouncer[] bouncer = new Bouncer[100];
     stroke(#003300);
     fill(#0000FF);
     bouncer[0] = new Ball(0,20,20);
-    int grabCount = 0;
-    int grabMax = 1;
+    int grabCount;
+    int grabMax;
   }
 
   void draw() {
-    if(grabMax == 99){
-        grabMax = 1;
-    }
-    if(grabCount == grabMax){
-        bouncer[grabMax] = new Ball(0,20,20);
-        grabMax++;
-    }
-    for(int b=0, end=grabMax; b<end;b++) {
+    for(int b=0, end=bouncer.length; b<end;b++) {
       bouncer[b].computeNextStep(width, height, frameRate);
     }
     background(#FFFFEE);
-    for(int b=0, end=grabMax; b<end;b++) {
+    for(int b=0, end=bouncer.length; b<end;b++) {
       bouncer[b].draw();
     }
   }
 
   void mousePressed() {
-   for(int b=0, end=grabMax; b<end;b++) {
+   for(int b=0, end=bouncer.length; b<end;b++) {
       if(bouncer[b].mouseOver(mouseX, mouseY)) {
         bouncer[b].mousePressed();
       }
@@ -36,7 +29,7 @@ Bouncer[] bouncer = new Bouncer[100];
   }
  
   void mouseReleased() {
-    for(int b=0, end=grabMax; b<end;b++) {
+    for(int b=0, end=bouncer.length; b<end;b++) {
       bouncer[b].mouseReleased();
     }
   }
