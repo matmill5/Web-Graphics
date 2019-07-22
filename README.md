@@ -7,9 +7,9 @@ It's comprised of course-work, homework assignments, and creative projects.
 It contains all the files to build each example.
 Its contents are also published to a live-website hosted by phythonanywhere.com (link below).
 
-**Demonstration Site:** http://mmill.pythonanywhere.com/
+Demonstration Site: http://mmill.pythonanywhere.com/
 
-**Note:** At the conclusion of this course, the repository will not be updated.
+Note: At the conclusion of this course, the repository will not be updated.
 
 #### **Contents:**
 - HTML 5 Canvas Examples (available)
