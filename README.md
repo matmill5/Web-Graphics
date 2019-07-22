@@ -12,13 +12,13 @@ Demonstration Site: http://mmill.pythonanywhere.com/
 Note: At the conclusion of this course, the repository will not be updated.
 
 #### **Contents:**
-- HTML 5 Canvas Examples (available)
-- SVG Graphics Examples (available)
-- Processing.js Examples (available)
-- ThreeJS. Examples (available)
-- Babylon Examples (available)
-- Photogrammetry Modeling (available)
-- 3D Models (available)
+- HTML 5 Canvas Examples
+- SVG Graphics Examples
+- Processing.js Examples
+- ThreeJS. Examples
+- Babylon Examples
+- Photogrammetry Modeling
+- 3D Models
 - Additional technologies like Flask, JSON, Python, etc.
 
 #### **To Do List:**
