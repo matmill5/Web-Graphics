@@ -3,7 +3,7 @@
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>Babylon Position and Rotation</title>
+        <title>Final Project:  Harley Davidson - Photogrammetry</title>
 
         <style>
             html, body {
@@ -35,38 +35,170 @@
         var canvas = document.getElementById("renderCanvas"); // Get the canvas element 
         var engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
 
-        /******* Add the create scene function ******/
+        // Create the Scene Function
         var createScene = function () {
 
-            // Create the scene space
+            // Create the scene, space
             var scene = new BABYLON.Scene(engine);
+
+            /*-----------------------Draw Motorcycle's Movement Path------------------------------------------*/ 
+            // Create array of points to describe the curve
+            var points = [];
+            var n = 450; // number of points
+            var r = 50; //radius
+            for (var i = 0; i < n + 1; i++) {
+                points.push( new BABYLON.Vector3((r + (r/5)*Math.sin(8*i*Math.PI/n))* Math.sin(2*i*Math.PI/n), 0, (r + (r/10)*Math.sin(6*i*Math.PI/n)) * Math.cos(2*i*Math.PI/n)));
+            }	
+            
+            //Draw the curve
+            var track = BABYLON.MeshBuilder.CreateLines('track', {points: points}, scene);
+            track.color = new BABYLON.Color3(0, 0, 0);
+            /*-----------------------End Motorcycle's Movement Path------------------------------------------*/ 
+
+            // Create Ground For The Scene
+            var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 3.4*r, height: 3.4*r}, scene);
+            var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
+            groundMaterial.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+            groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+            ground.material = groundMaterial;
 
             // Add a camera to the scene and attach it to the canvas
             var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, new BABYLON.Vector3(0,0,0), scene);
             camera.attachControl(canvas, true);
+            camera.position = new BABYLON.Vector3(-10,80,50)
 
-            // Add lights to the scene
-            var light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 0, 0), scene);
+            // Add Many Lights, Make The Scene Very Bright
+            var light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
             var light2 = new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
+            var light3 = new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 60, 10), scene);
+            var light4 = new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 30, -10), scene);
             
-            BABYLON.SceneLoader.ImportMesh("", "/static/scenes/HarleyRenderTrial2_IsolatedModel/", "HarleyRenderTrial2_IsolatedModel.obj", scene, function (meshes) {          
-                scene.createDefaultCameraOrLight(true, true, true);
+            // Load The Main Asset, A Motorcycle Scanned From Harley Davidson
+            BABYLON.SceneLoader.ImportMesh( null, "/static/scenes/Harley/", "HarleyMotorcycle.gltf", scene, function (newMeshes, particleSystems, skeletons) {
+                aMotorcycle = newMeshes[0];
+                
+                /*----------------Set Starting Position and Rotation of Motorcycle---------------------------*/
+                aMotorcycle.position = new BABYLON.Vector3(0,2,r);
+                
+                var path3d = new BABYLON.Path3D(points);
+                var normals = path3d.getNormals();
+                var theta = Math.acos(BABYLON.Vector3.Dot(BABYLON.Axis.Z,normals[0]));
+                aMotorcycle.rotate(BABYLON.Axis.Y, theta, BABYLON.Space.WORLD);
+                /*----------------End Starting Position of Motorcycle Set---------------------*/
+
+                /*----------------Scale Motorcycle, Set Default Environment---------------------------*/
+                aMotorcycle.scaling = new BABYLON.Vector3(0.5,0.5,0.5);
                 scene.createDefaultEnvironment();
+                /*----------------End Scale Motorcycle, Set Default Environment---------------------------*/
+
+                /*----------------Animation Loop---------------------------*/
+                var i=0;
+                scene.registerAfterRender(function() {
+                    aMotorcycle.position.x = points[i].x;
+                    aMotorcycle.position.z = points[i].z;
+                    
+                    theta = Math.acos(BABYLON.Vector3.Dot(normals[i],normals[i+1]));
+                    var dir = BABYLON.Vector3.Cross(normals[i],normals[i+1]).y;
+                    var dir = dir/Math.abs(dir);
+                    aMotorcycle.rotate(BABYLON.Axis.Y, dir * theta, BABYLON.Space.WORLD);
+                    
+                    i = (i + 1) % (n-1);//continuous looping  
+                });
+                /*----------------End Animation Loop---------------------------*/
+
+            });
+            
+            // Tree + Stand Set 1
+            // Trees
+            BABYLON.SceneLoader.ImportMesh(null, "/static/scenes/Tree/", "scene.gltf", scene, function (newMeshes2, particleSystems2, skeletons2) {
+                var tree = newMeshes2[0];
+
+                tree.position = new BABYLON.Vector3(-78, 0, 10);
+                tree.scaling = new BABYLON.Vector3(.7, 0.7, 0.7);
             });
 
-            /*var objImport = BABYLON.SceneLoader.Append("/static/scenes/HarleyRenderTrial2_IsolatedModel/", "HarleyRenderTrial2_IsolatedModel.obj", scene, function (scene) {
-                // Create a default arc rotate camera and light.
-                scene.createDefaultCameraOrLight(true, true, true);
+            // Stands
+            BABYLON.SceneLoader.ImportMesh(null, "/static/scenes/Seating/", "scene.gltf", scene, function (newMeshes2, particleSystems2, skeletons2) {
+                var seating = newMeshes2[0];
 
-                var myGround = BABYLON.MeshBuilder.CreateGround("myGround", {width: 60, height: 40, subdivisions: 4}, scene);
+                seating.position = new BABYLON.Vector3(-63, 0, 10);
+                seating.scaling = new BABYLON.Vector3(2.2, 2.2, 2.2);
+            });
+            /*----------------------------------End of Tree + Stand Set 1--------------------------------*/
 
-                // The default camera looks at the back of the asset.
-                // Rotate the camera by 180 degrees to the front of the asset.
-                scene.activeCamera.alpha += Math.PI;
-            });*/
+            // Tree + Stand Set 2
+            // Trees
+            BABYLON.SceneLoader.ImportMesh(null, "/static/scenes/Tree/", "scene.gltf", scene, function (newMeshes2, particleSystems2, skeletons2) {
+                var tree = newMeshes2[0];
+
+                tree.position = new BABYLON.Vector3(-65, 0, -8);
+                tree.scaling = new BABYLON.Vector3(0.7, 0.7, 0.7);
+            });
+
+            // Stands
+            BABYLON.SceneLoader.ImportMesh(null, "/static/scenes/Seating/", "scene.gltf", scene, function (newMeshes2, particleSystems2, skeletons2) {
+                var seating = newMeshes2[0];
+
+                seating.position = new BABYLON.Vector3(-55, 0, -5);
+                seating.scaling = new BABYLON.Vector3(2.2, 2.2, 2.2);
+            });
+            /*----------------------------------End of Tree + Stand Set 2--------------------------------*/
+
+            // Tree + Stand Set 3
+            // Trees
+            BABYLON.SceneLoader.ImportMesh(null, "/static/scenes/Tree/", "scene.gltf", scene, function (newMeshes2, particleSystems2, skeletons2) {
+                var tree = newMeshes2[0];
+
+                tree.position = new BABYLON.Vector3(-65, 0, 30);
+                tree.scaling = new BABYLON.Vector3(0.7, 0.7, 0.7);
+            });
+
+            // Stands
+            BABYLON.SceneLoader.ImportMesh(null, "/static/scenes/Seating/", "scene.gltf", scene, function (newMeshes2, particleSystems2, skeletons2) {
+                var seating = newMeshes2[0];
+
+                seating.position = new BABYLON.Vector3(-55, 0, 35);
+                seating.scaling = new BABYLON.Vector3(2.2, 2.2, 2.2);
+            });
+            /*----------------------------------End of Tree + Stand Set 3--------------------------------*/
+
+            //Flag
+            BABYLON.SceneLoader.ImportMesh(null, "/static/scenes/Flag/", "scene.gltf", scene, function (newMeshes2, particleSystems2, skeletons2) {
+                var flag = newMeshes2[0];
+
+                flag.position = new BABYLON.Vector3(0, 0, 0);
+                flag.scaling = new BABYLON.Vector3(.01, 0.01, 0.01);
+            });
+
+            //Load Show Bike, next to Flag
+            BABYLON.SceneLoader.ImportMesh(null, "/static/scenes/Harley/", "HarleyMotorcycle.gltf", scene, function (newMeshes2, particleSystems2, skeletons2) {
+                var aBike = newMeshes2[0];
+
+                aBike.position = new BABYLON.Vector3(0, 2, 5);
+                aBike.scaling = new BABYLON.Vector3(.5, .5, .5);
+            });
+
+            //Barrier 1
+            BABYLON.SceneLoader.ImportMesh(null, "/static/scenes/Barrier/", "scene.gltf", scene, function (newMeshes2, particleSystems2, skeletons2) {
+                var barrier1 = newMeshes2[0];
+
+                barrier1.rotate(BABYLON.Axis.Y, -Math.PI/4, BABYLON.Space.WORLD);
+                barrier1.position = new BABYLON.Vector3(-7, 1, 3);
+                barrier1.scaling = new BABYLON.Vector3(3, 3, 3);
+            });
+
+            //Barrier 2
+            BABYLON.SceneLoader.ImportMesh(null, "/static/scenes/Barrier/", "scene.gltf", scene, function (newMeshes2, particleSystems2, skeletons2) {
+                var barrier2 = newMeshes2[0];
+
+                barrier2.rotate(BABYLON.Axis.Y, Math.PI/4, BABYLON.Space.WORLD);
+                barrier2.position = new BABYLON.Vector3(7, 1, 3);
+                barrier2.scaling = new BABYLON.Vector3(3, 3, 3);
+            });
+
             return scene;
         };
-        /******* End of the create scene function ******/    
+        /*-----------------End create scene function-------------------------------*/    
 
         var scene = createScene(); //Call the createScene function
 
@@ -79,6 +211,7 @@
         window.addEventListener("resize", function () { 
                 engine.resize();
         });
+
     </script>
    </body>
 </html>
