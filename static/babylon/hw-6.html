@@ -96,6 +96,10 @@
                 scene.beginAnimation(skeletons[0], 0, 100, true, 1.0);
 
                 scene.createDefaultEnvironment();
+
+                scene.registerAfterRender(function() {
+                    aDragon.rotate(BABYLON.Axis.Y, Math.PI/800 , BABYLON.Space.WORLD);
+                });
             });
 
             //Dude's Army of Followers
