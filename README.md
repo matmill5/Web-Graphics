@@ -15,8 +15,9 @@ Note: At the conclusion of this course, the repository will not be updated.
 - HTML 5 Canvas Examples
 - SVG Graphics Examples
 - Processing.js Examples
-- ThreeJS. Examples
-- Babylon Examples
+- Three.js Examples
+- p5.js Examples
+- Babylon.js Examples
 - Photogrammetry Modeling
 - 3D Models
 - Additional technologies like Flask, JSON, Python, etc.
